@@ -1,7 +1,0 @@
-var searchData=
-[
-  ['getnumofchannelsasync',['GetNumOfChannelsAsync',['../class_vbox___home___x_m_l_t_v_interface_library_1_1_portable_x_m_l_t_v_interface_library_async.html#a539e93baa3b6b6d550bbe3c5bfcec8c6',1,'Vbox_Home_XMLTVInterfaceLibrary::PortableXMLTVInterfaceLibraryAsync']]],
-  ['getxmltvchannelslistasync',['GetXmltvChannelsListAsync',['../class_vbox___home___x_m_l_t_v_interface_library_1_1_portable_x_m_l_t_v_interface_library_async.html#a3812d881e0b205d0778b4605041c63a8',1,'Vbox_Home_XMLTVInterfaceLibrary.PortableXMLTVInterfaceLibraryAsync.GetXmltvChannelsListAsync(Uri u, string fromChIndex, string toChIndex)'],['../class_vbox___home___x_m_l_t_v_interface_library_1_1_portable_x_m_l_t_v_interface_library_async.html#a58d2b6f8e38b83ed1b39dcbf4628a405',1,'Vbox_Home_XMLTVInterfaceLibrary.PortableXMLTVInterfaceLibraryAsync.GetXmltvChannelsListAsync(Uri u, string channelsList)']]],
-  ['getxmltventirefileasync',['GetXmltvEntireFileAsync',['../class_vbox___home___x_m_l_t_v_interface_library_1_1_portable_x_m_l_t_v_interface_library_async.html#adbf6906bc11c78f663e6f709c79e2c66',1,'Vbox_Home_XMLTVInterfaceLibrary::PortableXMLTVInterfaceLibraryAsync']]],
-  ['getxmltvlanguagetracksasync',['GetXmltvLanguageTracksAsync',['../class_vbox___home___x_m_l_t_v_interface_library_1_1_portable_x_m_l_t_v_interface_library_async.html#a7d0a9f1c077ebf5db8d4feca57809ad6',1,'Vbox_Home_XMLTVInterfaceLibrary::PortableXMLTVInterfaceLibraryAsync']]]
-];
