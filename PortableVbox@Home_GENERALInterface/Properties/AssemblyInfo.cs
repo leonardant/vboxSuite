@@ -25,11 +25,11 @@ using System.Resources;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("PortableInterfaceLibraryCommon")]
-[assembly: AssemblyDescription("Portable Interface Library Common with shared functionality across all vbox interfaces")]
+[assembly: AssemblyTitle("PortableVbox@Home_GENERALInterface")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Anthony Leonard")]
-[assembly: AssemblyProduct("PortableInterfaceLibraryCommon")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("PortableVbox@Home_GENERALInterface")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

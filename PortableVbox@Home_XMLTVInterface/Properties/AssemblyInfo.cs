@@ -1,15 +1,34 @@
-﻿using System.Resources;
+﻿//-----------------------------------------------------------------------
+// <copyright file="AssemblyInfo.cs" company="Anthony Leonard">
+// Copyright (c) Anthony Leonard. All rights reserved.
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library. If not, see http://www.gnu.org/licenses/.
+// </copyright>
+// <author>Anthony Leonard</author>
+// <date>25/04/2014 09:02:39</date>
+//-----------------------------------------------------------------------
+
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+using System.Resources;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("PortableVbox@Home_XMLTVInterface")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Portable Interface Library for XMLTV Interface")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Anthony Leonard")]
 [assembly: AssemblyProduct("PortableVbox@Home_XMLTVInterface")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
