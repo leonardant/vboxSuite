@@ -103,7 +103,104 @@ namespace Vbox_Home_XMLTVInterfaceLibrary
             }
         }
 
-        ////TODO GetXmltvSection
+        /// <summary>
+        /// Async Get sub-range of channels and programs in XMLTV file format by range of channels and range of time
+        /// </summary>
+        /// <param name="u">the uri of the device</param>
+        /// <param name="fromChIndex">a string representing the first channel in a range to query against</param>
+        /// <param name="toChIndex">a string representing the last channel in a range to query against</param>
+        /// <param name="startTime">(optional) The start time in XMLTV time format "20120315130000+0200"</param>
+        /// <param name="endTime">(optional) The end time in XMLTV time format "20120315143000+0200"</param>
+        /// <returns>returns an XDocument object representing success OR failure</returns>
+        /// <remarks>error codes "20012 - server error" and "21012 - xml parse error" and "20013 - input error"</remarks>
+        public async Task<XDocument> GetXmltvSectionAsync(Uri u, string fromChIndex, string toChIndex, string startTime = "", string endTime = "")
+        {
+            string urlContents = string.Empty;
+
+            if (string.IsNullOrEmpty(fromChIndex) || string.IsNullOrEmpty(toChIndex))
+            {
+                urlContents = string.Format(this.FailedResponseXml, "20013", WebUtility.UrlEncode("null or empty channel index"));
+            }
+            else
+            {
+                try
+                {
+                    using (HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(2) })
+                    {
+                        string requestString = @u.ToString() + CommonRequestStringPortion + Enum_MethodName_XmltvInterface.GetXmltvSection.ToString() + "&FromChIndex=" + fromChIndex + "&ToChIndex=" + toChIndex +
+                                (string.IsNullOrEmpty(startTime) ? "&StartTime=" + startTime : string.Empty) +
+                                (string.IsNullOrEmpty(endTime) ? "&EndTime=" + endTime : string.Empty);
+                        Task<string> getStringTask = client.GetStringAsync(requestString);
+                        urlContents = await getStringTask;
+                    }
+                }
+                catch (Exception ex1)
+                {
+                    urlContents = string.Format(this.FailedResponseXml, "20012", WebUtility.UrlEncode(ex1.ToString()));
+                }
+            }
+
+            try
+            {
+                return XDocument.Parse(urlContents);
+            }
+            catch (Exception ex2)
+            {
+                urlContents = string.Format(this.FailedResponseXml, "21012", WebUtility.UrlEncode(ex2.ToString()));
+                return XDocument.Parse(urlContents);
+            }
+        }
+
+        /// <summary>
+        /// Async Get sub-range of channels and programs in XMLTV file format by range of channels and range of time
+        /// </summary>
+        /// <param name="u">the uri of the device</param>
+        /// <param name="channelsList">a comma delimited string representing the channels in a range to query against</param>
+        /// <param name="startTime">(optional) The start time in XMLTV time format "20120315130000+0200"</param>
+        /// <param name="endTime">(optional) The end time in XMLTV time format "20120315143000+0200"</param>
+        /// <returns>returns an XDocument object representing success OR failure</returns>
+        /// <remarks>error codes "20014 - server error" and "21014 - xml parse error" and "20015 / 20016 - input error"</remarks>
+        public async Task<XDocument> GetXmltvSectionAsync(Uri u, string channelsList, string startTime = "", string endTime = "")
+        {
+            string urlContents = string.Empty;
+
+            if (string.IsNullOrEmpty(channelsList))
+            {
+                urlContents = string.Format(this.FailedResponseXml, "20015", WebUtility.UrlEncode("null or empty channel list"));
+            }
+            else if (!channelsList.Contains(","))
+            {
+                urlContents = string.Format(this.FailedResponseXml, "20016", WebUtility.UrlEncode("channel list does not appear to be a comma seperated list"));
+            }
+            else
+            {
+                try
+                {
+                    using (HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(2) })
+                    {
+                        string requestString = @u.ToString() + CommonRequestStringPortion + Enum_MethodName_XmltvInterface.GetXmltvSection.ToString() + "&ChannelsList=" + channelsList +
+                                (string.IsNullOrEmpty(startTime) ? "&StartTime=" + startTime : string.Empty) +
+                                (string.IsNullOrEmpty(endTime) ? "&EndTime=" + endTime : string.Empty);
+                        Task<string> getStringTask = client.GetStringAsync(requestString);
+                        urlContents = await getStringTask;
+                    }
+                }
+                catch (Exception ex1)
+                {
+                    urlContents = string.Format(this.FailedResponseXml, "20014", WebUtility.UrlEncode(ex1.ToString()));
+                }
+            }
+
+            try
+            {
+                return XDocument.Parse(urlContents);
+            }
+            catch (Exception ex2)
+            {
+                urlContents = string.Format(this.FailedResponseXml, "21014", WebUtility.UrlEncode(ex2.ToString()));
+                return XDocument.Parse(urlContents);
+            }
+        }
 
         /// <summary>
         /// Async get the XMLTV Channels List (formatted in XMLTV format) from the device 
@@ -196,7 +293,111 @@ namespace Vbox_Home_XMLTVInterfaceLibrary
             }
         }
 
-        ////TODO GetXmltvProgramsList 
+        /// <summary>
+        /// Async Get List of programs belong to specific Channel in XMLTV file format
+        /// </summary>
+        /// <param name="u">the uri of the device</param>
+        /// <param name="channelList">The index of the channel in a range to query against</param>
+        /// <returns>returns an XDocument object representing success OR failure</returns>
+        /// <remarks>error codes "20017 - server error" and "21017 - xml parse error" and "20018 / 20019 - input error"</remarks>
+        public async Task<XDocument> GetXmltvProgramsListUsingChannelListAsync(Uri u, string channelList)
+        {
+            string urlContents = string.Empty;
+
+            if (string.IsNullOrEmpty(channelList))
+            {
+                urlContents = string.Format(this.FailedResponseXml, "20018", WebUtility.UrlEncode("null or empty channel list"));
+            }
+            else if (!channelList.Contains(","))
+            {
+                urlContents = string.Format(this.FailedResponseXml, "20019", WebUtility.UrlEncode("channel list does not appear to be a comma seperated list"));
+            }
+            else
+            {
+                try
+                {
+                    using (HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(2) })
+                    {
+                        string requestString = @u.ToString() + CommonRequestStringPortion + Enum_MethodName_XmltvInterface.GetXmltvProgramsList.ToString() + "&ChannelsList=" + channelList;
+                        Task<string> getStringTask = client.GetStringAsync(requestString);
+                        urlContents = await getStringTask;
+                    }
+                }
+                catch (Exception ex1)
+                {
+                    urlContents = string.Format(this.FailedResponseXml, "20017", WebUtility.UrlEncode(ex1.ToString()));
+                }
+            }
+
+            try
+            {
+                return XDocument.Parse(urlContents);
+            }
+            catch (Exception ex2)
+            {
+                urlContents = string.Format(this.FailedResponseXml, "21017", WebUtility.UrlEncode(ex2.ToString()));
+                return XDocument.Parse(urlContents);
+            }
+        }
+
+        /// <summary>
+        /// Async Get List of programs belong to specific Channel in XMLTV file format
+        /// </summary>
+        /// <param name="u">the uri of the device</param>
+        /// <param name="channelIndex">The index of the channel</param>
+        /// <returns>returns an XDocument object representing success OR failure</returns>
+        /// <remarks>error codes "20020 - server error" and "21020 - xml parse error" and "20021 / 20022 - input error"</remarks>
+        public async Task<XDocument> GetXmltvProgramsListUsingChannelIndexAsync(Uri u, string channelIndex)
+        {
+            string urlContents = string.Empty;
+
+            if (string.IsNullOrEmpty(channelIndex))
+            {
+                urlContents = string.Format(this.FailedResponseXml, "20021", WebUtility.UrlEncode("null or empty channel index"));
+            }
+            else if (channelIndex.Contains(","))
+            {
+                urlContents = string.Format(this.FailedResponseXml, "20022", WebUtility.UrlEncode("channel index appears to be a comma seperated list"));
+            }
+            else
+            {
+                try
+                {
+                    using (HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(2) })
+                    {
+                        string requestString = @u.ToString() + CommonRequestStringPortion + Enum_MethodName_XmltvInterface.GetXmltvProgramsList.ToString() + "&ChannelIndex=" + channelIndex;
+                        Task<string> getStringTask = client.GetStringAsync(requestString);
+                        urlContents = await getStringTask;
+                    }
+                }
+                catch (Exception ex1)
+                {
+                    urlContents = string.Format(this.FailedResponseXml, "20020", WebUtility.UrlEncode(ex1.ToString()));
+                }
+            }
+
+            try
+            {
+                return XDocument.Parse(urlContents);
+            }
+            catch (Exception ex2)
+            {
+                urlContents = string.Format(this.FailedResponseXml, "21020", WebUtility.UrlEncode(ex2.ToString()));
+                return XDocument.Parse(urlContents);
+            }
+        }
+
+        /// <summary>
+        /// Async Get List of programs belong to specific Channel in XMLTV file format
+        /// </summary>
+        /// <param name="u">the uri of the device</param>
+        /// <param name="channelIndex">The index of the channel</param>
+        /// <returns>returns an XDocument object representing success OR failure</returns>
+        /// <remarks>error codes "20020 - server error" and "21020 - xml parse error" and "20021 / 20022 - input error"</remarks>
+        public async Task<XDocument> GetXmltvProgramsListUsingChannelIndexAsync(Uri u, int channelIndex)
+        {
+            return await this.GetXmltvProgramsListUsingChannelIndexAsync(u, channelIndex.ToString());
+        }
 
         /// <summary>
         /// Async get the XMLTV Language Tracks(formatted in XMLTV format) from the device

@@ -31,7 +31,7 @@ namespace Vbox_Home_GeneralInterfaceLibrary
     /// <summary>
     /// Async Portable GENERAL Interface Library to the device.
     /// </summary>
-    public class GeneralInterfaceLibraryAsync : PortableInterfaceLibraryCommon
+    public class PortableGeneralInterfaceLibraryAsync : PortableInterfaceLibraryCommon
     {
         /// <summary>
         /// Async Get the Time from the device in the requested format
