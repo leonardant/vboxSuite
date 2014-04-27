@@ -19,8 +19,6 @@
 // <date>26/03/2014 22:49:56</date>
 //-----------------------------------------------------------------------
 
-
-
 namespace PortableVbox_GHome_RecordingsInterface
 {
     using System;

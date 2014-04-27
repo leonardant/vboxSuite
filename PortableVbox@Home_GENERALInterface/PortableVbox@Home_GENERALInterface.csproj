@@ -39,7 +39,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GeneralInterfaceLibraryAsync.cs" />
+    <Compile Include="PortableGeneralInterfaceLibraryAsync.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

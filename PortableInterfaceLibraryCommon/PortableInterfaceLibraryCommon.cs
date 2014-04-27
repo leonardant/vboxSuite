@@ -62,9 +62,30 @@ namespace Vbox_Home_CommonLibrary
         }
 
         /// <summary>
+        /// the public enumeration for XMLTV language track types
+        /// </summary>
+        public enum Enum_LanguageTrackTypes
+        {
+            /// <summary>
+            /// The lang track type ALL
+            /// </summary>
+            ALL,
+
+            /// <summary>
+            /// The lang track type AUDIO
+            /// </summary>
+            AUDIO,
+
+            /// <summary>
+            /// The lang track type SUBTITLE
+            /// </summary>
+            SUBTITLE
+        }
+
+        /// <summary>
         /// the public enumeration for common query type to run
         /// </summary>
-        public enum Enum_MethodName_GeneralInterface
+        public enum Enum_MethodNames_GeneralInterface
         {
             /// <summary>
             /// The query system time
@@ -85,7 +106,7 @@ namespace Vbox_Home_CommonLibrary
         /// <summary>
         /// the public enumeration for XMLTV query type to run
         /// </summary>
-        public enum Enum_MethodName_XmltvInterface
+        public enum Enum_MethodNames_XmltvInterface
         {
             /// <summary>
             /// The query system time
@@ -129,24 +150,49 @@ namespace Vbox_Home_CommonLibrary
         }
 
         /// <summary>
-        /// the public enumeration for XMLTV language track types
+        /// the public enumeration for common query type to run
         /// </summary>
-        public enum Enum_MethodName_XmltvInterfaceLanguageTrackTypes
+        public enum Enum_MethodNames_RecordingsInterface
         {
             /// <summary>
-            /// The lang track type ALL
+            /// The query "Schedule a Channel Recording"
             /// </summary>
-            ALL,
+            ScheduleChannelRecord,
 
             /// <summary>
-            /// The lang track type AUDIO
+            /// The query "Schedule a Program Recording"
             /// </summary>
-            AUDIO,
+            ScheduleProgramRecord,
 
             /// <summary>
-            /// The lang track type SUBTITLE
+            /// The query "Start a Recording [NOW implied!!]"
             /// </summary>
-            SUBTITLE
+            StartRecord,
+
+            /// <summary>
+            /// The query "Stop a Recording [NOW implied!!]"
+            /// </summary>
+            StopRecord,
+
+            /// <summary>
+            /// The query "Get Recordings List"
+            /// </summary>
+            GetRecordsList,
+
+            /// <summary>
+            /// The query "Get Recordings Info"
+            /// </summary>
+            GetRecordInfo,
+
+            /// <summary>
+            /// The query "Cancel a Recording [prior to start]"
+            /// </summary>
+            CancelRecord,
+
+            /// <summary>
+            /// The query "Delete a Recording [remove the mpg file]"
+            /// </summary>
+            DeleteRecord
         }
 
         /// <summary>

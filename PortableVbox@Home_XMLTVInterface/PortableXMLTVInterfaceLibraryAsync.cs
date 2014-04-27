@@ -47,7 +47,7 @@ namespace Vbox_Home_XMLTVInterfaceLibrary
             {
                 using (HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(2) })
                 {
-                    string requestString = @u.ToString() + CommonRequestStringPortion + Enum_MethodName_XmltvInterface.QueryXmltvNumOfChannels.ToString();
+                    string requestString = @u.ToString() + CommonRequestStringPortion + Enum_MethodNames_XmltvInterface.QueryXmltvNumOfChannels.ToString();
                     Task<string> getStringTask = client.GetStringAsync(requestString);
                     urlContents = await getStringTask;
                 }
@@ -82,7 +82,7 @@ namespace Vbox_Home_XMLTVInterfaceLibrary
             {
                 using (HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(2) })
                 {
-                    string requestString = @u.ToString() + CommonRequestStringPortion + Enum_MethodName_XmltvInterface.GetXmltvEntireFile.ToString();
+                    string requestString = @u.ToString() + CommonRequestStringPortion + Enum_MethodNames_XmltvInterface.GetXmltvEntireFile.ToString();
                     Task<string> getStringTask = client.GetStringAsync(requestString);
                     urlContents = await getStringTask;
                 }               
@@ -127,7 +127,7 @@ namespace Vbox_Home_XMLTVInterfaceLibrary
                 {
                     using (HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(2) })
                     {
-                        string requestString = @u.ToString() + CommonRequestStringPortion + Enum_MethodName_XmltvInterface.GetXmltvSection.ToString() + "&FromChIndex=" + fromChIndex + "&ToChIndex=" + toChIndex +
+                        string requestString = @u.ToString() + CommonRequestStringPortion + Enum_MethodNames_XmltvInterface.GetXmltvSection.ToString() + "&FromChIndex=" + fromChIndex + "&ToChIndex=" + toChIndex +
                                 (string.IsNullOrEmpty(startTime) ? "&StartTime=" + startTime : string.Empty) +
                                 (string.IsNullOrEmpty(endTime) ? "&EndTime=" + endTime : string.Empty);
                         Task<string> getStringTask = client.GetStringAsync(requestString);
@@ -178,7 +178,7 @@ namespace Vbox_Home_XMLTVInterfaceLibrary
                 {
                     using (HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(2) })
                     {
-                        string requestString = @u.ToString() + CommonRequestStringPortion + Enum_MethodName_XmltvInterface.GetXmltvSection.ToString() + "&ChannelsList=" + channelsList +
+                        string requestString = @u.ToString() + CommonRequestStringPortion + Enum_MethodNames_XmltvInterface.GetXmltvSection.ToString() + "&ChannelsList=" + channelsList +
                                 (string.IsNullOrEmpty(startTime) ? "&StartTime=" + startTime : string.Empty) +
                                 (string.IsNullOrEmpty(endTime) ? "&EndTime=" + endTime : string.Empty);
                         Task<string> getStringTask = client.GetStringAsync(requestString);
@@ -224,7 +224,7 @@ namespace Vbox_Home_XMLTVInterfaceLibrary
                 {
                     using (HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(2) })
                     {
-                        string requestString = @u.ToString() + CommonRequestStringPortion + Enum_MethodName_XmltvInterface.GetXmltvChannelsList.ToString() + "&FromChIndex=" + fromChIndex + "&ToChIndex=" + toChIndex;
+                        string requestString = @u.ToString() + CommonRequestStringPortion + Enum_MethodNames_XmltvInterface.GetXmltvChannelsList.ToString() + "&FromChIndex=" + fromChIndex + "&ToChIndex=" + toChIndex;
                         Task<string> getStringTask = client.GetStringAsync(requestString);
                         urlContents = await getStringTask;
                     }
@@ -271,7 +271,7 @@ namespace Vbox_Home_XMLTVInterfaceLibrary
                 {
                     using (HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(2) })
                     {
-                        string requestString = @u.ToString() + CommonRequestStringPortion + Enum_MethodName_XmltvInterface.GetXmltvChannelsList.ToString() + "&ChannelsList=" + channelsList;
+                        string requestString = @u.ToString() + CommonRequestStringPortion + Enum_MethodNames_XmltvInterface.GetXmltvChannelsList.ToString() + "&ChannelsList=" + channelsList;
                         Task<string> getStringTask = client.GetStringAsync(requestString);
                         urlContents = await getStringTask;
                     }
@@ -318,7 +318,7 @@ namespace Vbox_Home_XMLTVInterfaceLibrary
                 {
                     using (HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(2) })
                     {
-                        string requestString = @u.ToString() + CommonRequestStringPortion + Enum_MethodName_XmltvInterface.GetXmltvProgramsList.ToString() + "&ChannelsList=" + channelList;
+                        string requestString = @u.ToString() + CommonRequestStringPortion + Enum_MethodNames_XmltvInterface.GetXmltvProgramsList.ToString() + "&ChannelsList=" + channelList;
                         Task<string> getStringTask = client.GetStringAsync(requestString);
                         urlContents = await getStringTask;
                     }
@@ -365,7 +365,7 @@ namespace Vbox_Home_XMLTVInterfaceLibrary
                 {
                     using (HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(2) })
                     {
-                        string requestString = @u.ToString() + CommonRequestStringPortion + Enum_MethodName_XmltvInterface.GetXmltvProgramsList.ToString() + "&ChannelIndex=" + channelIndex;
+                        string requestString = @u.ToString() + CommonRequestStringPortion + Enum_MethodNames_XmltvInterface.GetXmltvProgramsList.ToString() + "&ChannelIndex=" + channelIndex;
                         Task<string> getStringTask = client.GetStringAsync(requestString);
                         urlContents = await getStringTask;
                     }
@@ -407,7 +407,7 @@ namespace Vbox_Home_XMLTVInterfaceLibrary
         /// <param name="langTrackType">an enumeration from ENUM_METHODNAME_XMLTVINTERFACELANGUAGETRACKTYPES</param>
         /// <returns>returns an XDocument object representing success OR failure</returns>
         /// <remarks>error codes "20008 - server error" and "21008 - xml parse error" and "20007 - input error"</remarks>
-        public async Task<XDocument> GetXmltvLanguageTracksAsync(Uri u, string channelID, Enum_MethodName_XmltvInterfaceLanguageTrackTypes langTrackType)
+        public async Task<XDocument> GetXmltvLanguageTracksAsync(Uri u, string channelID, Enum_LanguageTrackTypes langTrackType)
         {
             string urlContents = string.Empty;
 
@@ -421,7 +421,7 @@ namespace Vbox_Home_XMLTVInterfaceLibrary
                 {
                     using (HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(2) })
                     {
-                        string requestString = @u.ToString() + CommonRequestStringPortion + Enum_MethodName_XmltvInterface.GetXmltvLanguageTracks.ToString() + "&ChannelID =" + channelID + "&Type=" + langTrackType.ToString();
+                        string requestString = @u.ToString() + CommonRequestStringPortion + Enum_MethodNames_XmltvInterface.GetXmltvLanguageTracks.ToString() + "&ChannelID =" + channelID + "&Type=" + langTrackType.ToString();
                         Task<string> getStringTask = client.GetStringAsync(requestString);
                         urlContents = await getStringTask;
                     }
@@ -464,7 +464,7 @@ namespace Vbox_Home_XMLTVInterfaceLibrary
                 {
                     using (HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(2) })
                     {
-                        string requestString = @u.ToString() + CommonRequestStringPortion + Enum_MethodName_XmltvInterface.ScanEPG.ToString() + "&ChannelID =" + channelID;
+                        string requestString = @u.ToString() + CommonRequestStringPortion + Enum_MethodNames_XmltvInterface.ScanEPG.ToString() + "&ChannelID =" + channelID;
                         Task<string> getStringTask = client.GetStringAsync(requestString);
                         urlContents = await getStringTask;
                     }
@@ -500,7 +500,7 @@ namespace Vbox_Home_XMLTVInterfaceLibrary
             {
                 using (HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(2) })
                 {
-                    string requestString = @u.ToString() + CommonRequestStringPortion + Enum_MethodName_XmltvInterface.ScanEPG.ToString();
+                    string requestString = @u.ToString() + CommonRequestStringPortion + Enum_MethodNames_XmltvInterface.ScanEPG.ToString();
                     Task<string> getStringTask = client.GetStringAsync(requestString);
                     urlContents = await getStringTask;
                 }

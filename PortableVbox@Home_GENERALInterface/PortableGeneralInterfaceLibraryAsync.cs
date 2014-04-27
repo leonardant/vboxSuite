@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="GeneralInterfaceLibraryAsync.cs" company="Anthony Leonard">
+// <copyright file="PortableGeneralInterfaceLibraryAsync.cs" company="Anthony Leonard">
 // Copyright (c) Anthony Leonard. All rights reserved.
 //
 // This library is free software; you can redistribute it and/or
@@ -47,7 +47,7 @@ namespace Vbox_Home_GeneralInterfaceLibrary
             try
             {
                 HttpClient client = new HttpClient();
-                string requestString = @u.ToString() + CommonRequestStringPortion + Enum_MethodName_GeneralInterface.QuerySystemTime.ToString() + "&TimeFormat=" + t.ToString();
+                string requestString = @u.ToString() + CommonRequestStringPortion + Enum_MethodNames_GeneralInterface.QuerySystemTime.ToString() + "&TimeFormat=" + t.ToString();
                 Task<string> getStringTask = client.GetStringAsync(requestString);
                 urlContents = await getStringTask;
             }
@@ -80,7 +80,7 @@ namespace Vbox_Home_GeneralInterfaceLibrary
             try
             {
                 HttpClient client = new HttpClient();
-                string requestString = @u.ToString() + CommonRequestStringPortion + Enum_MethodName_GeneralInterface.QueryExternalMediaStatus.ToString();
+                string requestString = @u.ToString() + CommonRequestStringPortion + Enum_MethodNames_GeneralInterface.QueryExternalMediaStatus.ToString();
                 Task<string> getStringTask = client.GetStringAsync(requestString);
                 urlContents = await getStringTask;
             }
@@ -113,7 +113,7 @@ namespace Vbox_Home_GeneralInterfaceLibrary
             try
             {
                 HttpClient client = new HttpClient();
-                string requestString = @u.ToString() + CommonRequestStringPortion + Enum_MethodName_GeneralInterface.QueryBoardInfo.ToString();
+                string requestString = @u.ToString() + CommonRequestStringPortion + Enum_MethodNames_GeneralInterface.QueryBoardInfo.ToString();
                 Task<string> getStringTask = client.GetStringAsync(requestString);
                 urlContents = await getStringTask;
             }
