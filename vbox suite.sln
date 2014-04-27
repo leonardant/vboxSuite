@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortableVbox@Home_XMLTVInte
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests_ForWholeLibrary", "UnitTests_ForWholeLibrary\UnitTests_ForWholeLibrary.csproj", "{6A458513-9352-4A5E-A2B2-EB45220EF07B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortableVbox@GHome_RecordingsInterface", "PortableVbox@GHome_RecordingsInterface\PortableVbox@GHome_RecordingsInterface.csproj", "{EDA1BFBE-0044-4A4C-81A6-88F7B041E270}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortableVbox@Home_RecordingsInterface", "PortableVbox@GHome_RecordingsInterface\PortableVbox@Home_RecordingsInterface.csproj", "{EDA1BFBE-0044-4A4C-81A6-88F7B041E270}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
