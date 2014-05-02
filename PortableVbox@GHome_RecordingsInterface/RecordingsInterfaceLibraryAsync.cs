@@ -275,13 +275,133 @@ namespace PortableVbox_GHome_RecordingsInterface
             }
         }
 
-        /*            
-            GetRecordInfo
-                FileName [see QueryRecordsList should be GetRecordsList under LocalTarget field]
-            CancelRecord
-                RecordID [see QueryRecordsList should be GetRecordsList under record-id field]
-            DeleteRecord
-                RecordID [see QueryRecordsList should be GetRecordsList under record-id field]
-        */
+        /// <summary>
+        /// Async Get Recordings Information
+        /// </summary>
+        /// <param name="u">the uri of the device</param>
+        /// <param name="fileName">Full path to recorded stream url encoded (as returned by QueryRecordsList under LocalTarget)</param>
+        /// <returns>returns an XDocument object representing success OR failure</returns>
+        /// <remarks>error codes "30014 - server error" and "31014 - xml parse error" and "30015 - input error"</remarks>
+        public async Task<XDocument> GetRecordInfoAsync(Uri u, string fileName)
+        {
+            string urlContents = string.Empty;
+
+            if (string.IsNullOrEmpty(fileName))
+            {
+                urlContents = string.Format(this.FailedResponseXml, "30015", WebUtility.UrlEncode("null or empty file Name id"));
+            }
+            else
+            {
+                try
+                {
+                    using (HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(2) })
+                    {
+                        string requestString = @u.ToString() + CommonRequestStringPortion + Enum_MethodNames_RecordingsInterface.GetRecordInfo.ToString() + "FileName=" + fileName;
+                        Task<string> getStringTask = client.GetStringAsync(requestString);
+                        urlContents = await getStringTask;
+                    }
+                }
+                catch (Exception ex1)
+                {
+                    urlContents = string.Format(this.FailedResponseXml, "30014", WebUtility.UrlEncode(ex1.ToString()));
+                }
+            }
+
+            try
+            {
+                return XDocument.Parse(urlContents);
+            }
+            catch (Exception ex2)
+            {
+                urlContents = string.Format(this.FailedResponseXml, "31014", WebUtility.UrlEncode(ex2.ToString()));
+                return XDocument.Parse(urlContents);
+            }
+        }
+
+        /// <summary>
+        /// Async Cancel Recording
+        /// </summary>
+        /// <param name="u">the uri of the device</param>
+        /// <param name="recordID">The Record ID (as return by QueryRecordsList)</param>
+        /// <returns>returns an XDocument object representing success OR failure</returns>
+        /// <remarks>error codes "30016 - server error" and "31016 - xml parse error"  and "30017 - input error"</remarks>
+        public async Task<XDocument> CancelRecordingAsync(Uri u, string recordID)
+        {
+            string urlContents = string.Empty;
+
+            if (string.IsNullOrEmpty(recordID))
+            {
+                urlContents = string.Format(this.FailedResponseXml, "30017", WebUtility.UrlEncode("null or empty record id"));
+            }
+            else
+            {
+                try
+                {
+                    using (HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(2) })
+                    {
+                        string requestString = @u.ToString() + CommonRequestStringPortion + Enum_MethodNames_RecordingsInterface.CancelRecord.ToString() + "RecordID=" + recordID;
+                        Task<string> getStringTask = client.GetStringAsync(requestString);
+                        urlContents = await getStringTask;
+                    }
+                }
+                catch (Exception ex1)
+                {
+                    urlContents = string.Format(this.FailedResponseXml, "30016", WebUtility.UrlEncode(ex1.ToString()));
+                }
+            }
+
+            try
+            {
+                return XDocument.Parse(urlContents);
+            }
+            catch (Exception ex2)
+            {
+                urlContents = string.Format(this.FailedResponseXml, "31016", WebUtility.UrlEncode(ex2.ToString()));
+                return XDocument.Parse(urlContents);
+            }
+        }
+
+        /// <summary>
+        /// Async Delete Recording
+        /// </summary>
+        /// <param name="u">the uri of the device</param>
+        /// <param name="recordID">The Record ID (as return by QueryRecordsList)</param>
+        /// <returns>returns an XDocument object representing success OR failure</returns>
+        /// <remarks>error codes "30018 - server error" and "31018 - xml parse error"  and "30019 - input error"</remarks>
+        public async Task<XDocument> DeleteRecordingAsync(Uri u, string recordID)
+        {
+            string urlContents = string.Empty;
+
+            if (string.IsNullOrEmpty(recordID))
+            {
+                urlContents = string.Format(this.FailedResponseXml, "30019", WebUtility.UrlEncode("null or empty record id"));
+            }
+            else
+            {
+                try
+                {
+                    using (HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(2) })
+                    {
+                        string requestString = @u.ToString() + CommonRequestStringPortion + Enum_MethodNames_RecordingsInterface.DeleteRecord.ToString() + "RecordID=" + recordID;
+                        Task<string> getStringTask = client.GetStringAsync(requestString);
+                        urlContents = await getStringTask;
+                    }
+                }
+                catch (Exception ex1)
+                {
+                    urlContents = string.Format(this.FailedResponseXml, "30018", WebUtility.UrlEncode(ex1.ToString()));
+                }
+            }
+
+            try
+            {
+                return XDocument.Parse(urlContents);
+            }
+            catch (Exception ex2)
+            {
+                urlContents = string.Format(this.FailedResponseXml, "31018", WebUtility.UrlEncode(ex2.ToString()));
+                return XDocument.Parse(urlContents);
+            }
+        }
     }
 }
