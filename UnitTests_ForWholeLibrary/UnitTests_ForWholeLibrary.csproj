@@ -6,7 +6,7 @@
     <ProjectGuid>{6A458513-9352-4A5E-A2B2-EB45220EF07B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UnitTests_GeneralInterfaceLibraryAsync</RootNamespace>
+    <RootNamespace>UnitTests_RecordingsInterfaceLibraryAsync</RootNamespace>
     <AssemblyName>UnitTests_GeneralInterfaceLibraryAsync</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -55,6 +55,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="UnitTests_forRecordingsInterfaceLibraryAsync.cs" />
     <Compile Include="UnitTests_for_XMLTVInterfaceLibraryAsync.cs" />
     <Compile Include="UnitTests_for_GeneralInterfaceLibraryAsync.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

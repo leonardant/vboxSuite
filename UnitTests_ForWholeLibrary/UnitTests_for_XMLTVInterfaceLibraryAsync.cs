@@ -4,13 +4,14 @@ using Vbox_Home_GeneralInterfaceLibrary;
 using System.Xml.Linq;
 using Vbox_Home_XMLTVInterfaceLibrary;
 
-namespace UnitTests_GeneralInterfaceLibraryAsync
+namespace UnitTests_RecordingsInterfaceLibraryAsync
 {
     [TestClass]
     public class UnitTests_for_GeneralInterfaceLibraryAsync
     {
         const string serverProtAndIp_success = "http://10.100.107.204";
         const string serverProtAndIp_failure = "http://10.100.107.45";
+        const string serverProtAndIp_MockDamagedResponse = "http://localhost:8080";
 
         [TestMethod]
         public void Test_canGetNumOfChannelsAsync()
