@@ -1,10 +1,15 @@
 vboxSuite
 =========
 
-vboxSuite
-
-A set of portable dll's for use in .net 4 applications allowing the code to communicate with the vbox device as per...
+vboxSuite is...
+1)  4 portable dll's for use in .net 4 applications allowing the code to communicate with the vbox device as per...
 http://www.vboxcomm.com/
+
+2) a set of unit tests for the above [see notes below]
+
+3) the libmpeg2 library allowing mpg2 video rendering [see notes below]
+
+4) a store [windows RT] application demoing the above 1 & 3 combined 
 
 The current device tested and developed against is an XTi 3340 running SW version XTI_VB.2.39 [OS on the box!].
 
