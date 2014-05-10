@@ -31,11 +31,15 @@ libmpeg2 open source mpeg player / control
 compiling libmpeg2 seems only to be available in ARM, Win32 and x64 mode
 
 win32 / debug - no notes
+
 x64 / debug - lots of errors, typically Error: '__asm' keyword not supported on this architecture, so probably not worth the aggravation!
+
 ARM / debug - no notes
 
 win32 / release - no notes
+
 x64 / release - see above - not worth the aggravation!
+
 ARM / release - no notes
 
 With the above in mind any deployed application utilising the player would probably have to be compiled separately for each platform
