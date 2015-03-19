@@ -8,7 +8,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Common/StandardStyles.xaml"/>
-                <ResourceDictionary Source="ms-appx:///Microsoft.PlayerFramework/themes/EntertainmentTheme.xaml"/>
+                
             </ResourceDictionary.MergedDictionaries>
             <x:String x:Key="AppName">MPEG-2 TS Player</x:String>
         </ResourceDictionary>
