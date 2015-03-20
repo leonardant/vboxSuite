@@ -10,6 +10,7 @@ using Vbox_Home_XMLTVInterfaceLibrary;
 using System.Linq;
 using MoreLinq;
 using mpeg2_player.Data.DataModels;
+using Windows.UI.Popups;
 
 namespace mpeg2_player
 {
@@ -22,25 +23,33 @@ namespace mpeg2_player
 
         protected async override void LoadState(Object param, Dictionary<String, Object> state)
         {
-            DefaultViewModel["Groups"] = await loadChannelDataIntoDbAsync();
-                // VideoDataSource.GetGroups();
+            List<channels> chList = await App.dsfdd.Db.QueryAsync<channels>("select * from channels where channelId > ?", 0);
+            if (chList.Count > 0)
+            {
+                await showChannelsAsync();
+            }
+            else
+            {
+                // should prompt the user to do this 1st....
+                await loadChannelDataIntoDbAsync();
+            } 
+        }
+
+        private async Task showChannelsAsync()
+        {
+            List<channels> cList = await App.dsfdd.channelsData.Items.ToListAsync();
+            itemGridView.ItemsSource = cList;//.DistinctBy(i => i.ChannelName);
         }
 
         private void ItemView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            /*
-            VideoDataItem item = e.ClickedItem as VideoDataItem;
-            if (item.ID >= 0)
-            {
-                Frame.Navigate(typeof(PlayerPage), item.ID);
-            }
-            */
-            var itemId = (ChannelListDataItem)e.ClickedItem;
+            var itemId = (channels)e.ClickedItem;
             this.Frame.Navigate(typeof(PlayerPage), itemId);
         }
 
-        private async Task<List<ChannelListDataItem>> loadChannelDataIntoDbAsync()
+        private async Task loadChannelDataIntoDbAsync()
         {
+            int numberOfChannelsAddedToDb = 0;
 
             PortableXMLTVInterfaceLibraryAsync P_XmltvIL = new PortableXMLTVInterfaceLibraryAsync();
 
@@ -59,13 +68,11 @@ namespace mpeg2_player
                                 channelUrl = node.Element("url").Attribute("src").Value.ToString()
                             }).Distinct();
 
-            List<ChannelListDataItem> cList = new List<ChannelListDataItem>();
-
             List<channels> channelList = new List<channels>();
 
             foreach (var item in channelsFromXML)
             {
-                ChannelListDataItem cldi = new ChannelListDataItem(item.channelUniqueId, item.channelIcon, item.channelName, item.channelType, item.channelCode, item.channelPPV, item.channelSource, item.channelUrl);
+                
                 channels c = new channels();
 
                 c.channelUniqueId = item.channelUniqueId;
@@ -77,28 +84,39 @@ namespace mpeg2_player
                 c.channelSource = item.channelSource;
                 c.channelUrl = item.channelUrl;
 
-                channelList.Add(c);
-
-                cList.Add(cldi);
+                channelList.Add(c); 
             }
 
-            int x = await App.dsfdd.Db.InsertAllAsync(channelList.AsEnumerable<channels>());
+            // clear the old db data
+            int clearDbRowsAffected = await App.dsfdd.Db.ExecuteAsync("delete from channels where channelId > ?", 0);
 
-            itemGridView.ItemsSource = cList;//.DistinctBy(i => i.ChannelName);
+            numberOfChannelsAddedToDb = await App.dsfdd.Db.InsertAllAsync(channelList.AsEnumerable<channels>());
 
-            return cList;
-
+            if (numberOfChannelsAddedToDb.Equals(0))
+            {
+                showUserCancelableMessage("no channels added to the database");
+            }
+            else if (numberOfChannelsAddedToDb.Equals(1))
+            {
+                showUserCancelableMessage("1 channels added to the database");
+            }
+            else
+            {
+                showUserCancelableMessage(numberOfChannelsAddedToDb.ToString() + " channels added to the database");
+            }
         }
+
+        private async void showUserCancelableMessage(string message)
+        {
+            var messageDialog = new MessageDialog(message);
+            messageDialog.DefaultCommandIndex = 0;
+            messageDialog.CancelCommandIndex = 0;
+            await messageDialog.ShowAsync();
+        }
+
 
         private void OpenFileButton_Click(object sender, RoutedEventArgs e)
         {
-
-            /*
-            int id = await App.Current.PickFile();
-            if(id >= 0) {
-                Frame.Navigate(typeof(PlayerPage), id); 
-            }
-            */
             Frame.Navigate(typeof(PlayerPage), ((Button)sender).CommandParameter.ToString());
         }
 

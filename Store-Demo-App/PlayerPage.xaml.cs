@@ -11,6 +11,7 @@ using Windows.System.Display;
 using Microsoft.PlayerFramework;
 using mpeg2_player.Common;
 using mpeg2_player.Data;
+using mpeg2_player.Data.DataModels;
 
 namespace mpeg2_player
 {
@@ -95,9 +96,9 @@ namespace mpeg2_player
             //this.DefaultViewModel["Item"] = item;
 
 
-            if (param.GetType() == typeof(ChannelListDataItem))
+            if (param.GetType() == typeof(channels))
             {
-                var item = (ChannelListDataItem)param;
+                var item = (channels)param;
                 MediaPlayer.Source = new Uri(item.channelUrl);
                 MediaPlayer.Play();
             }
