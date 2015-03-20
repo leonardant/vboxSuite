@@ -38,7 +38,7 @@
                     <Grid HorizontalAlignment="Left" Width="250" Height="250">
 
                         <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}">
-                            <Image Source="{Binding channelIcon}" Stretch="UniformToFill" AutomationProperties.Name="{Binding channelName}"/>
+                            <Image Height="250" Width="250" Source="{Binding channelIcon}" Stretch="UniformToFill" AutomationProperties.Name="{Binding channelName}"/>
                         </Border>
 
                         <StackPanel VerticalAlignment="Bottom" Background="{ThemeResource ListViewItemOverlayBackgroundThemeBrush}">

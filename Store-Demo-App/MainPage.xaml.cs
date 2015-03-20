@@ -36,6 +36,7 @@ namespace mpeg2_player
             {
                 // should prompt the user to do this 1st....
                 await loadChannelDataIntoDbAsync();
+                await showChannelsAsync();
             } 
         }
 
@@ -83,7 +84,7 @@ namespace mpeg2_player
                 Regex r = new Regex(string.Format("[{0}]", Regex.Escape(regexSearch)));
                 string channelNameToLookupFix = r.Replace(item.channelName, "_");
 
-                string imageFile = @"Assets\ChannelIcons\" + channelNameToLookupFix + ".png";
+                string imageFile = @"Assets\ChannelIcons\" + item.channelType + @"\" + channelNameToLookupFix + @".png";
                 StorageFolder InstallationFolder = Windows.ApplicationModel.Package.Current.InstalledLocation;
                 var file = await InstallationFolder.TryGetItemAsync(imageFile);
 
