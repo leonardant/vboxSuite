@@ -11,6 +11,10 @@ using System.Linq;
 using MoreLinq;
 using mpeg2_player.Data.DataModels;
 using Windows.UI.Popups;
+using Windows.Storage;
+using Windows.Storage.Search;
+using System.Text.RegularExpressions;
+using System.IO;
 
 namespace mpeg2_player
 {
@@ -75,8 +79,16 @@ namespace mpeg2_player
                 
                 channels c = new channels();
 
+                string regexSearch = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+                Regex r = new Regex(string.Format("[{0}]", Regex.Escape(regexSearch)));
+                string channelNameToLookupFix = r.Replace(item.channelName, "_");
+
+                string imageFile = @"Assets\ChannelIcons\" + channelNameToLookupFix + ".png";
+                StorageFolder InstallationFolder = Windows.ApplicationModel.Package.Current.InstalledLocation;
+                var file = await InstallationFolder.TryGetItemAsync(imageFile);
+
                 c.channelUniqueId = item.channelUniqueId;
-                c.channelIcon = item.channelIcon;
+                c.channelIcon = (file != null ? "ms-appx:///" + imageFile : item.channelIcon);
                 c.channelName = item.channelName;
                 c.channelType = item.channelType;
                 c.channelCode = item.channelCode;
