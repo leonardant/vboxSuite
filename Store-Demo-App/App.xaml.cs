@@ -22,11 +22,16 @@ using Windows.UI.ViewManagement;
 //using Callisto.Controls;
 using mpeg2_player.Common;
 using mpeg2_player.Data;
+using Store_Demo_App.Data.DataSources;
 
 namespace mpeg2_player
 {
     sealed partial class App : Application
     {
+
+        public static readonly string DBNAME = "vboxData.db3";
+        public static DatasourceForDeviceData dsfdd;
+
         public static readonly IEnumerable<string> VideoExtensions = new ReadOnlyCollection<string>(
             new List<string>() { ".mpg", ".mpeg", ".m2v", ".ts" });
         new public static App Current;
@@ -80,6 +85,12 @@ namespace mpeg2_player
 
         protected override async void OnLaunched(LaunchActivatedEventArgs args)
         {
+
+
+            dsfdd = new DatasourceForDeviceData(DBNAME);
+            dsfdd.InitDatabase(DBNAME);
+            dsfdd.CreateTables();
+
             Frame rootFrame = Window.Current.Content as Frame;
             if (rootFrame == null)
             {

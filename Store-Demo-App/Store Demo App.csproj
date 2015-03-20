@@ -113,9 +113,15 @@
     <Compile Include="Common\MediaPlayerExtensions.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
     <Compile Include="DataModel\SampleDataSource.cs" />
+    <Compile Include="Data\DataModels\channels.cs" />
+    <Compile Include="Data\DataSources\DatasourceForDeviceData.cs" />
+    <Compile Include="Data\Repository.cs" />
     <Compile Include="DirectoryPage.xaml.cs">
       <DependentUpon>DirectoryPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="libs\SQLite.cs" />
+    <Compile Include="libs\SQLiteAsync.cs" />
+    <Compile Include="libs\sqlite_master.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -132,6 +138,7 @@
       <SubType>Designer</SubType>
     </AppxManifest>
     <None Include="mpeg2-player_TemporaryKey.pfx" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Logo.png" />
@@ -176,6 +183,9 @@
     <SDKReference Include="Microsoft.VCLibs, Version=12.0">
       <Name>Microsoft Visual C++ 2013 Runtime Package for Windows</Name>
     </SDKReference>
+    <SDKReference Include="SQLite.WinRT81, Version=3.8.4.1">
+      <Name>SQLite for Windows Runtime %28Windows 8.1%29</Name>
+    </SDKReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\libmpeg2\libmpeg2.vcxproj">
@@ -195,6 +205,13 @@
       <Name>PortableVbox%40Home_XMLTVInterface</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="MoreLinq.Portable">
+      <HintPath>..\packages\MoreLinq.Portable.1.1.0\lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1\MoreLinq.Portable.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="..\Store Demo App.Shared\Store Demo App.Shared.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>
   </PropertyGroup>

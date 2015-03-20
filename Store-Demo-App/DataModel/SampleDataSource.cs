@@ -21,22 +21,30 @@ namespace mpeg2_player.Data
 
     public class ChannelListDataItem
     {
-        public ChannelListDataItem(String uniqueId, String icon, String channelName, String url)
+        public ChannelListDataItem(String uniqueId, String icon, String channelName, String channelType, String channelCode, String channelPPV, String channelSource, String url)
         {
-            this.UniqueId = uniqueId;
-            this.Icon = icon;
-            this.ChannelName = channelName;
-            this.Url = url;
+            this.channelUniqueId = uniqueId;
+            this.channelIcon = icon;
+            this.channelName = channelName;
+            this.channelType = channelType;
+            this.channelCode = channelCode;
+            this.channelPPV  = channelPPV ;
+            this.channelSource = channelSource;
+            this.channelUrl = url;
         }
 
-        public string UniqueId { get; private set; }
-        public string Icon { get; private set; }
-        public string ChannelName { get; private set; }
-        public string Url { get; private set; }
+        public string channelUniqueId { get; private set; }
+        public string channelIcon { get; private set; }
+        public string channelName { get; private set; }
+        public string channelType { get; private set; }
+        public string channelCode { get; private set; }
+        public string channelPPV { get; private set; }
+        public string channelSource { get; private set; }
+        public string channelUrl { get; private set; }
 
         public override string ToString()
         {
-            return this.ChannelName;
+            return this.channelName;
         }
     }
 

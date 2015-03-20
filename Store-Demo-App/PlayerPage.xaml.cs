@@ -98,7 +98,7 @@ namespace mpeg2_player
             if (param.GetType() == typeof(ChannelListDataItem))
             {
                 var item = (ChannelListDataItem)param;
-                MediaPlayer.Source = new Uri(item.Url);
+                MediaPlayer.Source = new Uri(item.channelUrl);
                 MediaPlayer.Play();
             }
             else if (param.GetType() == typeof(string)) //came from OnFileActivated

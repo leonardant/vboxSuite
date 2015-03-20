@@ -8,6 +8,8 @@ using mpeg2_player.Data;
 using System.Threading.Tasks;
 using Vbox_Home_XMLTVInterfaceLibrary;
 using System.Linq;
+using MoreLinq;
+using mpeg2_player.Data.DataModels;
 
 namespace mpeg2_player
 {
@@ -20,7 +22,7 @@ namespace mpeg2_player
 
         protected async override void LoadState(Object param, Dictionary<String, Object> state)
         {
-            DefaultViewModel["Groups"] = await loadChannelDataAsync();
+            DefaultViewModel["Groups"] = await loadChannelDataIntoDbAsync();
                 // VideoDataSource.GetGroups();
         }
 
@@ -37,31 +39,52 @@ namespace mpeg2_player
             this.Frame.Navigate(typeof(PlayerPage), itemId);
         }
 
-        private async Task<List<ChannelListDataItem>> loadChannelDataAsync()
+        private async Task<List<ChannelListDataItem>> loadChannelDataIntoDbAsync()
         {
 
             PortableXMLTVInterfaceLibraryAsync P_XmltvIL = new PortableXMLTVInterfaceLibraryAsync();
 
             var ChannelList = await P_XmltvIL.GetXmltvEntireFileAsync(new Uri("http://10.100.107.204/", UriKind.Absolute));
 
-            var channels = (from node in ChannelList.Descendants("channel")
+            var channelsFromXML = (from node in ChannelList.Descendants("channel")
                             select new
                             {
-                                UniqueId = node.Attribute("id").Value.ToString(),
-                                icon = node.Element("icon").Attribute("src").Value.ToString(),
-                                channelName = node.Element("display-name").Value.ToString(),
-                                url = node.Element("url").Attribute("src").Value.ToString()
+                                channelUniqueId = node.Attribute("id").Value.ToString(),
+                                channelIcon = node.Element("icon").Attribute("src").Value.ToString(),
+                                channelName = node.Elements("display-name").ElementAt(0).Value.ToString(),
+                                channelType = node.Elements("display-name").ElementAt(1).Value.ToString(),
+                                channelCode = node.Elements("display-name").ElementAt(2).Value.ToString(),
+                                channelPPV = node.Elements("display-name").ElementAt(3).Value.ToString(),
+                                channelSource = node.Elements("display-name").ElementAt(4).Value.ToString(),
+                                channelUrl = node.Element("url").Attribute("src").Value.ToString()
                             }).Distinct();
 
             List<ChannelListDataItem> cList = new List<ChannelListDataItem>();
 
-            foreach (var item in channels)
+            List<channels> channelList = new List<channels>();
+
+            foreach (var item in channelsFromXML)
             {
-                ChannelListDataItem cldi = new ChannelListDataItem(item.UniqueId, item.icon, item.channelName, item.url);
+                ChannelListDataItem cldi = new ChannelListDataItem(item.channelUniqueId, item.channelIcon, item.channelName, item.channelType, item.channelCode, item.channelPPV, item.channelSource, item.channelUrl);
+                channels c = new channels();
+
+                c.channelUniqueId = item.channelUniqueId;
+                c.channelIcon = item.channelIcon;
+                c.channelName = item.channelName;
+                c.channelType = item.channelType;
+                c.channelCode = item.channelCode;
+                c.channelPPV = item.channelPPV;
+                c.channelSource = item.channelSource;
+                c.channelUrl = item.channelUrl;
+
+                channelList.Add(c);
+
                 cList.Add(cldi);
             }
 
-            itemGridView.ItemsSource = cList;
+            int x = await App.dsfdd.Db.InsertAllAsync(channelList.AsEnumerable<channels>());
+
+            itemGridView.ItemsSource = cList;//.DistinctBy(i => i.ChannelName);
 
             return cList;
 

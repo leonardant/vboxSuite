@@ -32,17 +32,21 @@
             SelectionMode="None"
             IsSwipeEnabled="false"
             IsItemClickEnabled="True"
-            ItemClick="ItemView_ItemClick" Margin="-42,10,42,-10">
+            ItemClick="ItemView_ItemClick">
             <GridView.ItemTemplate>
                 <DataTemplate>
                     <Grid HorizontalAlignment="Left" Width="250" Height="250">
 
                         <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}">
-                            <Image Source="{Binding Icon}" Stretch="UniformToFill" AutomationProperties.Name="{Binding ChannelName}"/>
+                            <Image Source="{Binding channelIcon}" Stretch="UniformToFill" AutomationProperties.Name="{Binding channelName}"/>
                         </Border>
 
                         <StackPanel VerticalAlignment="Bottom" Background="{ThemeResource ListViewItemOverlayBackgroundThemeBrush}">
-                            <TextBlock Text="{Binding ChannelName}" Foreground="{ThemeResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource TitleTextBlockStyle}" Height="60" Margin="15,0,15,0"/>
+                            <TextBlock Text="{Binding channelName}" Foreground="{ThemeResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource TitleTextBlockStyle}" Height="20" Margin="15,0,15,0"/>
+                            <TextBlock Text="{Binding channelType}" Foreground="{ThemeResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource TitleTextBlockStyle}" Height="14" Margin="15,0,15,0"/>
+                            <TextBlock Text="{Binding channelCode}" Foreground="{ThemeResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource TitleTextBlockStyle}" Height="14" Margin="15,0,15,0"/>
+                            <TextBlock Text="{Binding channelPPV}" Foreground="{ThemeResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource TitleTextBlockStyle}" Height="14" Margin="15,0,15,0"/>
+                            <TextBlock Text="{Binding channelSource}" Foreground="{ThemeResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource TitleTextBlockStyle}" Height="14" Margin="15,0,15,0"/>
                         </StackPanel>
                         <!--
                         <StackPanel>
