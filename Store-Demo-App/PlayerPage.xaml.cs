@@ -12,6 +12,7 @@ using Microsoft.PlayerFramework;
 using mpeg2_player.Common;
 using mpeg2_player.Data;
 using mpeg2_player.Data.DataModels;
+using Store_Demo_App.Data.DataModels;
 
 namespace mpeg2_player
 {
@@ -96,11 +97,13 @@ namespace mpeg2_player
             //this.DefaultViewModel["Item"] = item;
 
 
-            if (param.GetType() == typeof(channels))
+            if (param.GetType() == typeof(channel))
             {
-                var item = (channels)param;
-                MediaPlayer.Source = new Uri(item.channelUrl);
-                MediaPlayer.Play();
+                playChannel(param);
+            }
+            if (param.GetType() == typeof(recording))
+            {
+                playRecording(param);
             }
             else if (param.GetType() == typeof(string)) //came from OnFileActivated
             {
@@ -109,30 +112,32 @@ namespace mpeg2_player
             }
             else
             {
+                var item = param;
 
-                int id = (int)param;
-                VideoDataItem item = VideoDataSource.GetItem(id);
-                if (item != null)
+                if (item.GetType().Equals(typeof(channel)))
                 {
-                    OpenFile(item.File);
+                    playChannel(item);
                 }
-                else if (pageState["fileToken"] != null)
+                else if (item.GetType().Equals(typeof(recording)))
                 {
-                    StorageItemAccessList future = StorageApplicationPermissions.FutureAccessList;
-                    StorageFile file = await future.GetFileAsync(pageState["fileToken"] as string);
-                    future.Clear();
-                    OpenFile(file);
-                }
-                if (pageState != null)
-                {
-                    MediaPlayerState state = pageState["MediaState"] as MediaPlayerState;
-                    if (state != null)
-                    {
-                        MediaPlayer.RestorePlayerState(state);
-                    }
+                    playRecording(item);
                 }
             }
 
+        }
+
+        private void playRecording(object param)
+        {
+            var item = (recording)param;
+            MediaPlayer.Source = new Uri(item.recordingUrl);
+            MediaPlayer.Play();
+        }
+
+        private void playChannel(object param)
+        {
+            var item = (channel)param;
+            MediaPlayer.Source = new Uri(item.channelUrl);
+            MediaPlayer.Play();
         }
 
         protected override void SaveState(Dictionary<string, object> pageState)

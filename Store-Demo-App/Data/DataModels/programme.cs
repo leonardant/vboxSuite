@@ -7,7 +7,7 @@ using SQLite;
 
 namespace mpeg2_player.Data.DataModels
 {
-    public class programmes
+    public class programme
     {
         [PrimaryKey, AutoIncrement, Unique]
         public int programmeId { get; set; }

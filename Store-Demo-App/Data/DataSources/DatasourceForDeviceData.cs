@@ -2,6 +2,7 @@
 using mpeg2_player.Data.DataModels;
 using mpeg2_player.libs;
 using SQLite;
+using Store_Demo_App.Data.DataModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,7 +24,9 @@ namespace Store_Demo_App.Data.DataSources
             var dbPath = Path.Combine(UserFolder.Path, DBFILENAME);
             this.Db = new SQLiteAsyncConnection(dbPath);
 
-            channelsData = new Repository<channels>(Db);
+            channelsData = new Repository<channel>(Db);
+            programmesData = new Repository<programme>(Db);
+            recordingsData = new Repository<recording>(Db);
         }
 
         public void InitDatabase(string DBFILENAME)
@@ -49,20 +52,27 @@ namespace Store_Demo_App.Data.DataSources
                   .GetResult();
 
             //-- channels
-            if (existingTables.Any(x => x.name == "channels") != true)
+            if (existingTables.Any(x => x.name == "channel") != true)
             {
-                Db.CreateTableAsync<channels>().GetAwaiter().GetResult();
+                Db.CreateTableAsync<channel>().GetAwaiter().GetResult();
             }
 
             //-- programmes
-            if (existingTables.Any(x => x.name == "programmes") != true)
+            if (existingTables.Any(x => x.name == "programme") != true)
             {
-                Db.CreateTableAsync<programmes>().GetAwaiter().GetResult();
+                Db.CreateTableAsync<programme>().GetAwaiter().GetResult();
+            }
+
+            //-- recordings
+            if (existingTables.Any(x => x.name == "recording") != true)
+            {
+                Db.CreateTableAsync<recording>().GetAwaiter().GetResult();
             }
         }
 
-        public Repository<channels> channelsData { get; set; }
-        public Repository<programmes> programmesData { get; set; }
+        public Repository<channel> channelsData { get; set; }
+        public Repository<programme> programmesData { get; set; }
+        public Repository<recording> recordingsData { get; set; }
 
         public void Dispose()
         {

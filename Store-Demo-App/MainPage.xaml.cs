@@ -15,6 +15,9 @@ using Windows.Storage;
 using Windows.Storage.Search;
 using System.Text.RegularExpressions;
 using System.IO;
+using PortableVbox_GHome_RecordingsInterface;
+using Store_Demo_App.Data.DataModels;
+using Store_Demo_App.Common._23pd;
 
 namespace mpeg2_player
 {
@@ -27,7 +30,7 @@ namespace mpeg2_player
 
         protected async override void LoadState(Object param, Dictionary<String, Object> state)
         {
-            List<channels> chList = await App.dsfdd.Db.QueryAsync<channels>("select * from channels where channelId > ?", 0);
+            List<channel> chList = await App.dsfdd.Db.QueryAsync<channel>("select * from channel where channelId > ?", 0);
             if (chList.Count > 0)
             {
                 await showChannelsAsync();
@@ -36,20 +39,93 @@ namespace mpeg2_player
             {
                 // should prompt the user to do this 1st....
                 await loadChannelDataIntoDbAsync();
+                await loadRecordingsDataIntoDbAsync();
+
                 await showChannelsAsync();
             } 
         }
 
         private async Task showChannelsAsync()
         {
-            List<channels> cList = await App.dsfdd.channelsData.Items.ToListAsync();
-            itemGridView.ItemsSource = cList;//.DistinctBy(i => i.ChannelName);
+            List<channel> cList = await App.dsfdd.channelsData.Items.ToListAsync();
+            itemGridViewChannels.ItemsSource = cList;//.DistinctBy(i => i.ChannelName);
+            itemGridViewRecordings.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            itemGridViewChannels.Visibility = Windows.UI.Xaml.Visibility.Visible;
         }
 
-        private void ItemView_ItemClick(object sender, ItemClickEventArgs e)
+        private async Task showRecordingsAsync()
         {
-            var itemId = (channels)e.ClickedItem;
+            List<recording> rList = await App.dsfdd.recordingsData.Items.ToListAsync();
+            itemGridViewRecordings.ItemsSource = rList;//.DistinctBy(i => i.ChannelName);
+            itemGridViewChannels.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            itemGridViewRecordings.Visibility = Windows.UI.Xaml.Visibility.Visible;
+        }
+
+        private void ItemView_ItemChannelsClick(object sender, ItemClickEventArgs e)
+        {
+            var itemId = (channel)e.ClickedItem;
             this.Frame.Navigate(typeof(PlayerPage), itemId);
+        }
+
+        private void ItemView_ItemRecordingsClick(object sender, ItemClickEventArgs e)
+        {
+            var itemId = (recording)e.ClickedItem;
+            this.Frame.Navigate(typeof(PlayerPage), itemId);
+        }
+
+        private async Task loadRecordingsDataIntoDbAsync()
+        {
+            int clearDbRowsAffected = 0;
+
+            RecordingsInterfaceLibraryAsync RIL = new RecordingsInterfaceLibraryAsync();
+
+            var RecordingsList = await RIL.GetRecordsListAsync(new Uri("http://10.100.107.204/", UriKind.Absolute), true);
+
+            #region // scheduled Recordings
+            int numberOfRecordingsAddedToDb = 0;
+
+            var recordingsFromXML = (from node in RecordingsList.Descendants("record")
+                                     select new
+                                     {
+                                         recordingChannel = node.Attribute("channel").Value.ToString(),
+                                         recordingStart = node.Attribute("start").Value.ToString(),
+                                         recordingStop = node.Attribute("stop").Value.ToString(),
+                                         recordingChannelName = node.Element("channel-name").Value.ToString(),
+                                         recordingTitle = (node.Element("programme-title") != null ? node.Element("programme-title").Value.ToString() : string.Empty),
+                                         recordingDescription = (node.Element("programme-desc") != null ? node.Element("programme-desc").Value.ToString() : string.Empty),
+                                         recordingState = node.Element("state").Value.ToString(),
+                                         recordingRecordId = (node.Element("record-id") != null ? node.Element("record-id").Value.ToString() : string.Empty),
+                                         recordingUrl = (node.Element("url") != null ? node.Element("url").Value.ToString() : string.Empty),
+                                         recordingLocalTarget = (node.Element("LocalTarget") != null ? node.Element("LocalTarget").Value.ToString() : string.Empty)
+                                     }).Distinct();
+
+            List<recording> recordingsList = new List<recording>();
+
+            foreach (var item in recordingsFromXML)
+            {
+
+                recording r = new recording();
+
+                r.recordingChannel = item.recordingChannel;
+                r.recordingStart = item.recordingStart;
+                r.recordingStop = item.recordingStop;
+                r.recordingChannelName = item.recordingChannelName;
+                r.recordingTitle = item.recordingTitle;
+                r.recordingDescription = item.recordingDescription;
+                r.recordingState = item.recordingState;
+                r.recordingRecordId = item.recordingRecordId;
+                r.recordingUrl = item.recordingUrl;
+                r.recordingLocalTarget = item.recordingLocalTarget;
+
+                recordingsList.Add(r);
+            }
+
+            // clear the old db data
+            clearDbRowsAffected = await App.dsfdd.Db.ExecuteAsync("delete from recording where recordingId > ?", 0);
+
+            numberOfRecordingsAddedToDb = await App.dsfdd.Db.InsertAllAsync(recordingsList.AsEnumerable<recording>());
+
+            #endregion
         }
 
         private async Task loadChannelDataIntoDbAsync()
@@ -79,12 +155,12 @@ namespace mpeg2_player
 
 
 
-            List<channels> channelList = new List<channels>();
+            List<channel> channelList = new List<channel>();
 
             foreach (var item in channelsFromXML)
             {
                 
-                channels c = new channels();
+                channel c = new channel();
 
                 string regexSearch = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
                 Regex r = new Regex(string.Format("[{0}]", Regex.Escape(regexSearch)));
@@ -107,9 +183,9 @@ namespace mpeg2_player
             }
 
             // clear the old db data
-            clearDbRowsAffected = await App.dsfdd.Db.ExecuteAsync("delete from channels where channelId > ?", 0);
+            clearDbRowsAffected = await App.dsfdd.Db.ExecuteAsync("delete from channel where channelId > ?", 0);
 
-            numberOfChannelsAddedToDb = await App.dsfdd.Db.InsertAllAsync(channelList.AsEnumerable<channels>());
+            numberOfChannelsAddedToDb = await App.dsfdd.Db.InsertAllAsync(channelList.AsEnumerable<channel>());
 
             if (numberOfChannelsAddedToDb.Equals(0))
             {
@@ -142,12 +218,12 @@ namespace mpeg2_player
                                          programmeEpisodeNumberProgId = (node.Element("episode-num") != null ? node.Element("episode-num").Value.ToString() : string.Empty)
                                      }).Distinct();
 
-            List<programmes> programList = new List<programmes>();
+            List<programme> programList = new List<programme>();
 
             foreach (var item in programmesFromXML)
             {
 
-                programmes p = new programmes();
+                programme p = new programme();
 
                 p.programmeStart = item.programmeStart;
                 p.programmeStop = item.programmeStop;
@@ -161,9 +237,9 @@ namespace mpeg2_player
             }
 
             // clear the old db data
-            clearDbRowsAffected = await App.dsfdd.Db.ExecuteAsync("delete from programmes where programmeId > ?", 0);
+            clearDbRowsAffected = await App.dsfdd.Db.ExecuteAsync("delete from programme where programmeId > ?", 0);
 
-            numberOfProgrammesAddedToDb = await App.dsfdd.Db.InsertAllAsync(programList.AsEnumerable<programmes>());
+            numberOfProgrammesAddedToDb = await App.dsfdd.Db.InsertAllAsync(programList.AsEnumerable<programme>());
 
             if (numberOfProgrammesAddedToDb.Equals(0))
             {
@@ -182,16 +258,12 @@ namespace mpeg2_player
 
         private async void showUserCancelableMessage(string message)
         {
+            //MessageDialogShower m;
+
             var messageDialog = new MessageDialog(message);
             messageDialog.DefaultCommandIndex = 0;
             messageDialog.CancelCommandIndex = 0;
-            await messageDialog.ShowAsync();
-        }
-
-
-        private void OpenFileButton_Click(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(PlayerPage), ((Button)sender).CommandParameter.ToString());
+            await messageDialog.ShowDialogSafely();
         }
 
         private void Header_Click(object sender, RoutedEventArgs e)
@@ -199,6 +271,23 @@ namespace mpeg2_player
             FrameworkElement elem = sender as FrameworkElement;
             VideoDataGroup group = elem.DataContext as VideoDataGroup;
             Frame.Navigate(typeof(DirectoryPage), group.ID);
+        }
+
+        private async void OpenFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            //Frame.Navigate(typeof(PlayerPage), ((Button)sender).CommandParameter.ToString());   
+
+            switch (((Button)sender).CommandParameter.ToString())
+            {
+                case "Channels":
+                    await showChannelsAsync();
+                    break;
+                //case "Recordings":
+
+                default:
+                    await showRecordingsAsync();
+                    break;
+            }
         }
     }
 }

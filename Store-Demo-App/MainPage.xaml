@@ -11,6 +11,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
     <Page.Resources>
+        <common:stringToHumanizedStringConverter x:Key="datetimeStringToHumanizedStringConverter" />
         <CollectionViewSource
             x:Name="groupSource"
             Source="{Binding Groups}"
@@ -24,15 +25,15 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <GridView
-            x:Name="itemGridView"
-            AutomationProperties.AutomationId="ItemGridView"
+            x:Name="itemGridViewChannels"
+            AutomationProperties.AutomationId="itemGridViewChannels"
             AutomationProperties.Name="Grouped Items"
             Grid.RowSpan="2"
             Padding="116,137,40,46"
             SelectionMode="None"
             IsSwipeEnabled="false"
             IsItemClickEnabled="True"
-            ItemClick="ItemView_ItemClick">
+            ItemClick="ItemView_ItemChannelsClick">
             <GridView.ItemTemplate>
                 <DataTemplate>
                     <Grid HorizontalAlignment="Left" Width="250" Height="250">
@@ -82,6 +83,69 @@
                 </GroupStyle>
             </GridView.GroupStyle>
         </GridView>
+
+        <GridView
+            x:Name="itemGridViewRecordings"
+            AutomationProperties.AutomationId="itemGridViewRecordings"
+            AutomationProperties.Name="Grouped Items"
+            Grid.RowSpan="2"
+            Padding="116,137,40,46"
+            SelectionMode="None"
+            IsSwipeEnabled="false"
+            IsItemClickEnabled="True"
+            ItemClick="ItemView_ItemRecordingsClick">
+            <GridView.ItemTemplate>
+                <DataTemplate>
+                    <Grid HorizontalAlignment="Left" Width="250" Height="250">
+
+                        <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}">
+                            <Image Height="250" Width="250" Source="{Binding recordingChannelName}" Stretch="UniformToFill" AutomationProperties.Name="{Binding recordingChannelName}"/>
+                        </Border>
+
+                        <StackPanel VerticalAlignment="Bottom" Background="{ThemeResource ListViewItemOverlayBackgroundThemeBrush}">
+                            <TextBlock Foreground="{ThemeResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource TitleTextBlockStyle}" Height="20" Margin="15,0,15,0">
+                                <Run Text="{Binding recordingChannelName}"/>
+                                <Run Text=" : "/>
+                                <Run Text="{Binding recordingTitle}"/>
+                            </TextBlock>
+                            <TextBlock Text="{Binding recordingStart,Converter={StaticResource datetimeStringToHumanizedStringConverter}}" Foreground="{ThemeResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource TitleTextBlockStyle}" Height="16" Margin="15,0,15,0"/>
+                            <TextBlock Text="{Binding recordingStop,Converter={StaticResource datetimeStringToHumanizedStringConverter}}" Foreground="{ThemeResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource TitleTextBlockStyle}" Height="16" Margin="15,0,15,0"/>
+                        </StackPanel>
+                        <!--
+                        <StackPanel>
+                            <TextBlock Tapped="TextBlock_Tapped" Text="Watch" Foreground="{ThemeResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
+                            <TextBlock Tapped="TextBlock_Tapped" Text="Record" Foreground="{ThemeResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
+                        </StackPanel>
+                        -->
+                    </Grid>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+            <GridView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsWrapGrid GroupPadding="0,0,70,0"/>
+                </ItemsPanelTemplate>
+            </GridView.ItemsPanel>
+            <GridView.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <Grid Margin="0,0,0,2">
+                                <Button Foreground="{ThemeResource ApplicationHeaderForegroundThemeBrush}"
+                                    AutomationProperties.Name="Group Title"
+                                    Click="Header_Click"
+                                    Style="{StaticResource TextBlockButtonStyle}" >
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Title}" Margin="0,-11,10,10" Style="{StaticResource SubheaderTextBlockStyle}" TextWrapping="NoWrap" />
+                                        <TextBlock Text="{StaticResource ChevronGlyph}" FontFamily="Segoe UI Symbol" Margin="0,-11,0,10" Style="{StaticResource SubheaderTextBlockStyle}" TextWrapping="NoWrap" />
+                                    </StackPanel>
+                                </Button>
+                            </Grid>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                </GroupStyle>
+            </GridView.GroupStyle>
+        </GridView>
+        <!-- 
         <ListView
             x:Name="itemListView"
             AutomationProperties.AutomationId="ItemListView"
@@ -115,6 +179,7 @@
                 </GroupStyle>
             </ListView.GroupStyle>
         </ListView>
+        -->
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -159,9 +224,8 @@
     <Page.BottomAppBar>
         <AppBar x:Name="lowerAppBar" Background="{StaticResource AppBarBackgroundThemeBrush}">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                <Button x:Name="OpenFileButton" Content="Film4" Click="OpenFileButton_Click" Style="{StaticResource OpenFileAppBarButtonStyle}" CommandParameter="Film4"/>
-                <Button x:Name="OpenFileButton1" Content="TG4" Click="OpenFileButton_Click" Style="{StaticResource OpenFileAppBarButtonStyle}" CommandParameter="TG4"/>
-                <Button x:Name="OpenFileButton2" Content="RTE News Now" Click="OpenFileButton_Click" Style="{StaticResource OpenFileAppBarButtonStyle}" CommandParameter="RT%C3%89%20News%20Now" />
+                <Button x:Name="OpenFileButton" Content="Channels" Click="OpenFileButton_Click" Style="{StaticResource OpenFileAppBarButtonStyle}" CommandParameter="Channels"/>
+                <Button x:Name="OpenFileButton1" Content="Recordings" Click="OpenFileButton_Click" Style="{StaticResource OpenFileAppBarButtonStyle}" CommandParameter="Recordings"/>
             </StackPanel>
         </AppBar>
     </Page.BottomAppBar>

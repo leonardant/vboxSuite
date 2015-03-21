@@ -7,7 +7,7 @@ using SQLite;
 
 namespace mpeg2_player.Data.DataModels
 {
-    public class channels
+    public class channel
     {
         [PrimaryKey, AutoIncrement, Unique]
         public int channelId { get; set; }

@@ -110,11 +110,14 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\23pd\Convertors\stringToHumanizedStringConverter.cs" />
+    <Compile Include="Common\23pd\MessageDialogShower.cs" />
     <Compile Include="Common\MediaPlayerExtensions.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
     <Compile Include="DataModel\SampleDataSource.cs" />
-    <Compile Include="Data\DataModels\channels.cs" />
-    <Compile Include="Data\DataModels\programmes.cs" />
+    <Compile Include="Data\DataModels\channel.cs" />
+    <Compile Include="Data\DataModels\programme.cs" />
+    <Compile Include="Data\DataModels\recording.cs" />
     <Compile Include="Data\DataSources\DatasourceForDeviceData.cs" />
     <Compile Include="Data\Repository.cs" />
     <Compile Include="DirectoryPage.xaml.cs">
@@ -2780,6 +2783,10 @@
       <Project>{b0f1b536-687f-45d8-b5fb-17e34255c808}</Project>
       <Name>PortableInterfaceLibraryCommon</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PortableVbox%40GHome_RecordingsInterface\PortableVbox%40Home_RecordingsInterface.csproj">
+      <Project>{eda1bfbe-0044-4a4c-81a6-88f7b041e270}</Project>
+      <Name>PortableVbox%40Home_RecordingsInterface</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PortableVbox%40Home_GENERALInterface\PortableVbox%40Home_GENERALInterface.csproj">
       <Project>{665a42a4-5752-433b-913e-86c9e5b9fc61}</Project>
       <Name>PortableVbox%40Home_GENERALInterface</Name>
@@ -2790,6 +2797,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Humanizer">
+      <HintPath>..\packages\Humanizer.1.34.0\lib\portable-win+net40+sl50+wp8+wpa81\Humanizer.dll</HintPath>
+    </Reference>
     <Reference Include="MoreLinq.Portable">
       <HintPath>..\packages\MoreLinq.Portable.1.1.0\lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1\MoreLinq.Portable.dll</HintPath>
     </Reference>
