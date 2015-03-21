@@ -54,13 +54,17 @@ namespace mpeg2_player
 
         private async Task loadChannelDataIntoDbAsync()
         {
-            int numberOfChannelsAddedToDb = 0;
+            int clearDbRowsAffected = 0;
 
             PortableXMLTVInterfaceLibraryAsync P_XmltvIL = new PortableXMLTVInterfaceLibraryAsync();
 
-            var ChannelList = await P_XmltvIL.GetXmltvEntireFileAsync(new Uri("http://10.100.107.204/", UriKind.Absolute));
+            var ChannelAndProgrammeList = await P_XmltvIL.GetXmltvEntireFileAsync(new Uri("http://10.100.107.204/", UriKind.Absolute));
 
-            var channelsFromXML = (from node in ChannelList.Descendants("channel")
+            #region // channels
+
+            int numberOfChannelsAddedToDb = 0;
+
+            var channelsFromXML = (from node in ChannelAndProgrammeList.Descendants("channel")
                             select new
                             {
                                 channelUniqueId = node.Attribute("id").Value.ToString(),
@@ -72,6 +76,8 @@ namespace mpeg2_player
                                 channelSource = node.Elements("display-name").ElementAt(4).Value.ToString(),
                                 channelUrl = node.Element("url").Attribute("src").Value.ToString()
                             }).Distinct();
+
+
 
             List<channels> channelList = new List<channels>();
 
@@ -101,7 +107,7 @@ namespace mpeg2_player
             }
 
             // clear the old db data
-            int clearDbRowsAffected = await App.dsfdd.Db.ExecuteAsync("delete from channels where channelId > ?", 0);
+            clearDbRowsAffected = await App.dsfdd.Db.ExecuteAsync("delete from channels where channelId > ?", 0);
 
             numberOfChannelsAddedToDb = await App.dsfdd.Db.InsertAllAsync(channelList.AsEnumerable<channels>());
 
@@ -111,12 +117,67 @@ namespace mpeg2_player
             }
             else if (numberOfChannelsAddedToDb.Equals(1))
             {
-                showUserCancelableMessage("1 channels added to the database");
+                showUserCancelableMessage("1 channel added to the database");
             }
             else
             {
                 showUserCancelableMessage(numberOfChannelsAddedToDb.ToString() + " channels added to the database");
             }
+
+            #endregion
+
+            #region // programmes
+
+            int numberOfProgrammesAddedToDb = 0;
+
+            var programmesFromXML = (from node in ChannelAndProgrammeList.Descendants("programme")
+                                     select new
+                                     {
+                                         programmeStart = node.Attribute("start").Value.ToString(),
+                                         programmeStop = node.Attribute("stop").Value.ToString(),
+                                         programmeChannel = node.Attribute("channel").Value.ToString(),
+                                         programmeTitle = node.Element("title").Value.ToString(),
+                                         programmeDescription = node.Element("desc").Value.ToString(),
+                                         programmeEpisodeNumberSystem = (node.Element("episode-num") != null ? node.Element("episode-num").Attribute("system").Value.ToString() : string.Empty),
+                                         programmeEpisodeNumberProgId = (node.Element("episode-num") != null ? node.Element("episode-num").Value.ToString() : string.Empty)
+                                     }).Distinct();
+
+            List<programmes> programList = new List<programmes>();
+
+            foreach (var item in programmesFromXML)
+            {
+
+                programmes p = new programmes();
+
+                p.programmeStart = item.programmeStart;
+                p.programmeStop = item.programmeStop;
+                p.programmeChannel = item.programmeChannel;
+                p.programmeTitle = item.programmeTitle;
+                p.programmeDescription = item.programmeDescription;
+                p.programmeEpisodeNumberSystem = item.programmeEpisodeNumberSystem;
+                p.programmeEpisodeNumberProgId = item.programmeEpisodeNumberProgId;
+
+                programList.Add(p);
+            }
+
+            // clear the old db data
+            clearDbRowsAffected = await App.dsfdd.Db.ExecuteAsync("delete from programmes where programmeId > ?", 0);
+
+            numberOfProgrammesAddedToDb = await App.dsfdd.Db.InsertAllAsync(programList.AsEnumerable<programmes>());
+
+            if (numberOfProgrammesAddedToDb.Equals(0))
+            {
+                showUserCancelableMessage("no programmes added to the database");
+            }
+            else if (numberOfProgrammesAddedToDb.Equals(1))
+            {
+                showUserCancelableMessage("1 programme added to the database");
+            }
+            else
+            {
+                showUserCancelableMessage(numberOfProgrammesAddedToDb.ToString() + " programmes added to the database");
+            }
+            #endregion
         }
 
         private async void showUserCancelableMessage(string message)

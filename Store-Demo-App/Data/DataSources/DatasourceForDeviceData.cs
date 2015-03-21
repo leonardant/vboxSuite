@@ -48,14 +48,21 @@ namespace Store_Demo_App.Data.DataSources
                   .GetAwaiter()
                   .GetResult();
 
-            //-- offline_bookmarks
+            //-- channels
             if (existingTables.Any(x => x.name == "channels") != true)
             {
                 Db.CreateTableAsync<channels>().GetAwaiter().GetResult();
             }
+
+            //-- programmes
+            if (existingTables.Any(x => x.name == "programmes") != true)
+            {
+                Db.CreateTableAsync<programmes>().GetAwaiter().GetResult();
+            }
         }
 
         public Repository<channels> channelsData { get; set; }
+        public Repository<programmes> programmesData { get; set; }
 
         public void Dispose()
         {
