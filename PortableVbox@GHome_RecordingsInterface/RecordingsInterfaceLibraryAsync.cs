@@ -254,7 +254,7 @@ namespace PortableVbox_GHome_RecordingsInterface
             {
                 using (HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMinutes(2) })
                 {
-                    string requestString = @u.ToString() + CommonRequestStringPortion + Enum_MethodNames_RecordingsInterface.GetRecordsList.ToString() + "Externals=" + ext;
+                    string requestString = @u.ToString() + CommonRequestStringPortion + Enum_MethodNames_RecordingsInterface.GetRecordsList.ToString() + "&Externals=" + ext;
                     Task<string> getStringTask = client.GetStringAsync(requestString);
                     urlContents = await getStringTask;
                 }

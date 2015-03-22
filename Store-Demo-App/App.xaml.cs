@@ -23,6 +23,7 @@ using Windows.UI.ViewManagement;
 using mpeg2_player.Common;
 using mpeg2_player.Data;
 using Store_Demo_App.Data.DataSources;
+using Store_Demo_App;
 
 namespace mpeg2_player
 {
@@ -108,7 +109,7 @@ namespace mpeg2_player
             }
             if (rootFrame.Content == null)
             {
-                if (!rootFrame.Navigate(typeof(MainPage)))
+                if (!rootFrame.Navigate(typeof(HubPage)))
                 {
                     throw new Exception("Failed to create initial page");
                 }
