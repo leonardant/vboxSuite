@@ -370,7 +370,10 @@ namespace mpeg2_player.Common
             var frameState = SuspensionManager.SessionStateForFrame(this.Frame);
             var pageState = new Dictionary<String, Object>();
             this.SaveState(pageState);
-            frameState[_pageKey] = pageState;
+            if (this._pageKey != null)
+            {
+                frameState[_pageKey] = pageState;
+            }
         }
 
         /// <summary>

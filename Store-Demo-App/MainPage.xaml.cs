@@ -18,6 +18,7 @@ using System.IO;
 using PortableVbox_GHome_RecordingsInterface;
 using Store_Demo_App.Data.DataModels;
 using Store_Demo_App.Common._23pd;
+using Windows.UI.Xaml.Navigation;
 
 namespace mpeg2_player
 {
@@ -28,13 +29,16 @@ namespace mpeg2_player
             this.InitializeComponent();
         }
 
-        protected async override void LoadState(Object param, Dictionary<String, Object> state)
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            List<channel> chList = await App.dsfdd.Db.QueryAsync<channel>("select * from channel where channelId > ?", 0);
+            var parameter = e.Parameter as string;
+
+            List<channel> chList = await App.dsfdd.Db.QueryAsync<channel>("select * from channel where channelId > ? and channelType = ?", 0, parameter.ToString());
             if (chList.Count > 0)
             {
-                await showChannelsAsync();
+                await showChannelsAsync(parameter.ToString());
             }
+            /*
             else
             {
                 // should prompt the user to do this 1st....
@@ -42,12 +46,28 @@ namespace mpeg2_player
                 await loadRecordingsDataIntoDbAsync();
 
                 await showChannelsAsync();
-            } 
+            }
+            */
+        }
+
+        protected async override void LoadState(Object param, Dictionary<String, Object> state)
+        {
+
+
+            
         }
 
         private async Task showChannelsAsync()
         {
             List<channel> cList = await App.dsfdd.channelsData.Items.ToListAsync();
+            itemGridViewChannels.ItemsSource = cList;//.DistinctBy(i => i.ChannelName);
+            itemGridViewRecordings.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            itemGridViewChannels.Visibility = Windows.UI.Xaml.Visibility.Visible;
+        }
+
+        private async Task showChannelsAsync(string parameter)
+        {
+            List<channel> cList = await App.dsfdd.channelsData.Items.Where(x => x.channelType == parameter).ToListAsync();
             itemGridViewChannels.ItemsSource = cList;//.DistinctBy(i => i.ChannelName);
             itemGridViewRecordings.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
             itemGridViewChannels.Visibility = Windows.UI.Xaml.Visibility.Visible;

@@ -48,10 +48,10 @@
 
             <HubSection Width="640" Margin="0,0,80,0">
                 <HubSection.Background>
-                    <ImageBrush Stretch="UniformToFill" ImageSource="ms-appx:///Assets/channel_montage1_blured.png" />
+                    <ImageBrush Stretch="UniformToFill" ImageSource="ms-appx:///Assets/channel_montage1_greyscale.png" />
                 </HubSection.Background>
             </HubSection>
-            <HubSection Width="500" Header="TV" Tapped="HubSection_Tapped" >
+            <HubSection x:Name="TvHubsection" Width="500" Header="TV" Tapped="TvHubSection_Tapped" >
                 <DataTemplate>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -60,17 +60,14 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <Image Stretch="Fill" Width="420" Height="280"/>
-                        <TextBlock Style="{StaticResource SubheaderTextBlockStyle}" Grid.Row="1" Margin="0,10,0,0" TextWrapping="Wrap" 
-                                   Text="Lorem ipsum dolor sit nonumy sed consectetuer ising elit, sed diam"/>
-                        <TextBlock Style="{StaticResource TitleTextBlockStyle}" Grid.Row="2" Margin="0,10,0,0"
-                                   Text="Description text:"/>
-                        <TextBlock Style="{StaticResource BodyTextBlockStyle}" Grid.Row="3" 
-                                   Text="Lorem ipsum dolor sit amet, consectetuer ising elit, sed diam nonummy nibh uismod tincidunt ut laoreet suscipit lobortis ni ut wisi quipexerci quis consequat minim veniam, quis nostrud exerci tation ullam corper. Lorem ipsum dolor sit amet, consectetuer ising elit, sed diam nonummy nibh uismod tincidunt ut laoreet suscipit lobortis ni ut wisi quipexerci quis consequat minim veniam, quis nostrud exerci tation ullam corper. "/>
+                        <TextBlock Loaded="TvText_Loaded" x:Name="TvText" Style="{StaticResource TitleTextBlockStyle}" Grid.Row="0" Margin="0,10,0,0" TextWrapping="Wrap"  />
+                        <TextBlock Style="{StaticResource SubheaderTextBlockStyle}" Grid.Row="1" Text=""/>
+                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Grid.Row="2" Margin="0,10,0,0" Text=""/>
+                        <TextBlock Style="{StaticResource BodyTextBlockStyle}" Grid.Row="3" Text=""/>
                     </Grid>
                 </DataTemplate>
             </HubSection>
-            <HubSection Width="520" Header="Radio">
+            <HubSection x:Name="RadioHubsection" Width="500" Header="Radio" Tapped="RadioHubSection_Tapped">
                 <DataTemplate>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -79,14 +76,10 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <TextBlock Style="{StaticResource TitleTextBlockStyle}" Margin="0,0,0,10"
-                                   Text="Item Title" />
-                        <TextBlock Style="{StaticResource SubheaderTextBlockStyle}" Grid.Row="1" 
-                                   Text="Quisque in porta lorem dolor amet sed consectetuer ising elit, sed diam non my nibh uis mod wisi quip."/>
-                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Grid.Row="2" Margin="0,20,0,0"
-                                   Text="Item Sub Title"/>
-                        <TextBlock Style="{StaticResource BodyTextBlockStyle}" Grid.Row="3" 
-                                   Text="Lorem ipsum dolor sit amet, consectetuer ising elit, sed diam nonummy nibh uismod tincidunt ut laoreet suscipit lobortis ni ut wisi quipexerci quis consequat minim veniam, quis nostrud exerci tation ullam corper. Lorem ipsum dolor sit amet, consectetuer ising elit, sed diam nonummy nibh uismod tincidunt ut laoreet suscipit lobortis ni ut wisi quipexerci quis consequat minim veniam, quis nostrud exerci tation ullam corper."/>
+                        <TextBlock  Loaded="RadioText_Loaded" x:Name="RadioText" Style="{StaticResource TitleTextBlockStyle}" Margin="0,10,0,0" TextWrapping="Wrap" />
+                        <TextBlock Style="{StaticResource SubheaderTextBlockStyle}" Grid.Row="1" Text=""/>
+                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Grid.Row="2" Margin="0,20,0,0" Text=""/>
+                        <TextBlock Style="{StaticResource BodyTextBlockStyle}" Grid.Row="3" Text=""/>
                     </Grid>
                 </DataTemplate>
             </HubSection>
